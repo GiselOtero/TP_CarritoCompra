@@ -9,6 +9,11 @@ class MenuRol extends BaseDatos {
         $this->rol = null;
     }
 
+    public function setear($unMenu,$unRol){
+        $this->setMenu($unMenu);
+        $this->setRol($unRol);
+    }
+
     public function getMenu(){
         return $this->menu;
     }
@@ -91,15 +96,15 @@ class MenuRol extends BaseDatos {
     public function eliminar(){
         $resp = false;
         $base = new BaseDatos();
-        $sql = "DELETE FROM usuario WHERE idusuario='".$this->getUsuario()->getIDUsuario()."'  AND idrol='".$this->getRol()->getIDRol()."'";
+        $sql = "DELETE FROM menu WHERE idmenu='".$this->getMenu()->getIDMenu()."'  AND idrol='".$this->getRol()->getIDRol()."'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 return true;
             } else {
-                $this->setmensajeoperacion("Usuario->eliminar: ".$base->getError());
+                $this->setmensajeoperacion("Menu->eliminar: ".$base->getError());
             }
         } else {
-            $this->setmensajeoperacion("Usuario->eliminar: ".$base->getError());
+            $this->setmensajeoperacion("Menu->eliminar: ".$base->getError());
         }
         return $resp;
     }

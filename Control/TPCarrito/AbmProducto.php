@@ -116,20 +116,6 @@ class AbmProducto{
 
 
 
-    public function deshabilitar($param){
-        $resp = false;
-        
-        if ($this->seteadosCamposClaves($param)){
-            $objProducto = $this->cargarObjeto($param);
-            //verEstructura($objProducto);
-            if($objProducto != null and $objProducto->deshabilitar()){
-                $resp = true;
-            }
-        }
-        return $resp;
-    }
-
-
     /**
      * permite buscar un objeto
      * @param array $param

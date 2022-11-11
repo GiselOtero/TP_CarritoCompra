@@ -125,19 +125,7 @@ class AbmCompraItem{
 
 
 
-    public function deshabilitar($param){
-        $resp = false;
-        
-        if ($this->seteadosCamposClaves($param)){
-            $objCompraItem = $this->cargarObjeto($param);
-            //verEstructura($objCompraItem);
-            if($objCompraItem != null and $objCompraItem->deshabilitar()){
-                $resp = true;
-            }
-        }
-        return $resp;
-    }
-
+   
 
     /**
      * permite buscar un objeto

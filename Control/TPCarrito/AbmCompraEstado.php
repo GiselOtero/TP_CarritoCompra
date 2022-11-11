@@ -125,18 +125,7 @@ class AbmCompraEstado{
 
 
 
-    public function deshabilitar($param){
-        $resp = false;
-        
-        if ($this->seteadosCamposClaves($param)){
-            $objCompraEstado = $this->cargarObjeto($param);
-            //verEstructura($objCompraEstado);
-            if($objCompraEstado != null and $objCompraEstado->deshabilitar()){
-                $resp = true;
-            }
-        }
-        return $resp;
-    }
+    
 
 
     /**
