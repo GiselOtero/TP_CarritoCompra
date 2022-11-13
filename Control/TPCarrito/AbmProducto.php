@@ -3,6 +3,29 @@ class AbmProducto{
     //Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
 
     
+
+    public function accion($param){
+        $resp = false;
+        if($param['proaccion'] == 'editar'){
+            if($this->modificacion($param)){
+                $resp = true;
+            }
+        }
+        if($param['proaccion'] == 'eliminar'){
+            if($this->baja($param)){
+                $resp =true;
+            }
+        }
+        if($param['proaccion'] == 'nuevo'){
+            if($this->alta($param)){
+                $resp =true;
+            }
+            
+        }
+        return $resp;
+    }
+
+
     /**
      * Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
      * @param array $param
@@ -65,6 +88,9 @@ class AbmProducto{
      */
     public function alta($param){
         $resp = false;
+
+        $param['idproducto'] = null; //con increment
+
         $objProducto = $this->cargarObjeto($param);
 
         if ($objProducto!=null and $objProducto->insertar()){
@@ -103,10 +129,10 @@ class AbmProducto{
      */
     public function modificacion($param){
         $resp = false;
-        
+        echo 'modificacion'.$param['idproducto'];
         if ($this->seteadosCamposClaves($param)){
             $objProducto = $this->cargarObjeto($param);
-            //verEstructura($objProducto);
+            verEstructura($objProducto);
             if($objProducto != null and $objProducto->modificar()){
                 $resp = true;
             }
@@ -125,8 +151,8 @@ class AbmProducto{
         $where = " true ";
 
         if ($param<>NULL){
-            if  (isset($param['idProducto']))
-                $where.=" and idProducto ='".$param['idProducto']."'";
+            if  (isset($param['idproducto']))
+                $where.=" and idproducto ='".$param['idproducto']."'";
             if  (isset($param['pronombre']))
                  $where.=" and pronombre ='".$param['pronombre']."'";
             if  (isset($param['prodetalle']))

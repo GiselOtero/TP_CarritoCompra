@@ -82,13 +82,31 @@ class Producto extends BaseDatos {
 
 
 
-    public function insertar(){
+    /* public function insertar(){
         $resp = false;
         $base=new BaseDatos();
         $sql = "INSERT INTO producto(idproducto,pronombre,prodetalle,procantstock)  VALUES('".$this->getIDProducto()."','".$this->getProNombre()."','".$this->getProDetalle()."','".$this->getProCantStock()."');";
         if ($base->Iniciar()) {
             
             if ($base->Ejecutar($sql)) {
+                $resp = true;
+            } else {
+                $this->setmensajeoperacion("Producto->insertar: ".$base->getError());
+            }
+        } else {
+            $this->setmensajeoperacion("Producto->insertar: ".$base->getError());
+        }
+        return $resp;
+    } */
+    /* con autoincrement? */
+    public function insertar(){
+        $resp = false;
+        $base=new BaseDatos();
+        $sql = "INSERT INTO producto(pronombre,prodetalle,procantstock)  VALUES('".$this->getProNombre()."','".$this->getProDetalle()."','".$this->getProCantStock()."');";
+        if ($base->Iniciar()) {
+            
+            if ($id = $base->Ejecutar($sql)) {
+                $this->setIDProducto($id);
                 $resp = true;
             } else {
                 $this->setmensajeoperacion("Producto->insertar: ".$base->getError());
@@ -142,7 +160,7 @@ class Producto extends BaseDatos {
         $base = new BaseDatos();
         $sql = "SELECT * FROM producto ";
         if ($parametro!="") {
-            $sql.='WHERE '.$parametro;
+            $sql.=' WHERE '.$parametro;
         }
         $res = $base->Ejecutar($sql);
         if($res>-1){
