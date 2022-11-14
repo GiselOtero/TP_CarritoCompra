@@ -10,12 +10,24 @@ if(isset($datos['mensaje'])){
 ?>
 
 <div>
+    <div class="row float-left">
+        <div class="col-md-12 float-left">
+            <?php 
+            if($mensaje!=null) {
+                echo $mensaje;
+            }
+                
+            ?>
+        </div>
+    </div>
+
+
     <form action="verificarLogin.php" method="post" name="formularioLogin" id="formularioLogin">
-        <div>
+        <div class="mb-3">
             <label for="usnombre">Nombre Usuario</label>
             <input type="text" name="usnombre" id="usnombre">
         </div>
-        <div>
+        <div class="mb-3">
             <label for="uspass">Contrase&ntilde;a</label>
             <input type="text" name="uspass" id="uspass">
         </div>
@@ -28,16 +40,6 @@ if(isset($datos['mensaje'])){
         </div>
     </form>
     
-    <div class="row float-left">
-        <div class="col-md-12 float-left">
-            <?php 
-            if($mensaje!=null) {
-                echo $mensaje;
-            }
-                
-            ?>
-        </div>
-    </div>
 </div>
 
 
