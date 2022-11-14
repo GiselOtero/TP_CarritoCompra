@@ -3,6 +3,29 @@ class AbmUsuario{
     //Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
 
     
+
+    public function accion($param){
+        $resp = false;
+        if($param['accion'] == 'editar'){
+            if($this->modificacion($param)){
+                $resp = true;
+            }
+        }
+        if($param['accion'] == 'eliminar'){
+            if($this->baja($param)){
+                $resp =true;
+            }
+        }
+        if($param['accion'] == 'nuevo'){
+            if($this->alta($param)){
+                $resp =true;
+            }
+            
+        }
+        return $resp;
+    }
+
+
     /**
      * Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
      * @param array $param
@@ -64,6 +87,9 @@ class AbmUsuario{
      */
     public function alta($param){
         $resp = false;
+
+        $param['idproducto'] = null; //con increment
+        
         $objUsuario = $this->cargarObjeto($param);
 
         if ($objUsuario!=null and $objUsuario->insertar()){

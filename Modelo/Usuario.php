@@ -98,13 +98,32 @@ class Usuario extends BaseDatos{
     }
 
 
-    public function insertar(){
+    /* public function insertar(){
         $resp = false;
         $base=new BaseDatos();
         $sql = "INSERT INTO usuario(idusuario,usnombre,uspass,usmail,usdeshabilitado)  VALUES('".$this->getIDUsuario()."','".$this->getUsNombre()."','".$this->getUsPass()."','".$this->getUsMail()."','".$this->getUsDeshabilitado()."');";
         if ($base->Iniciar()) {
             
             if ($base->Ejecutar($sql)) {
+                $resp = true;
+            } else {
+                $this->setmensajeoperacion("Usuario->insertar: ".$base->getError());
+            }
+        } else {
+            $this->setmensajeoperacion("Usuario->insertar: ".$base->getError());
+        }
+        return $resp;
+    } */
+
+    /* con autoincrement? */
+    public function insertar(){
+        $resp = false;
+        $base=new BaseDatos();
+        $sql = "INSERT INTO usuario(usnombre,uspass,usmail,usdeshabilitado)  VALUES('".$this->getUsNombre()."','".$this->getUsPass()."','".$this->getUsMail()."','".$this->getUsDeshabilitado()."');";
+        if ($base->Iniciar()) {
+            
+            if ($id = $base->Ejecutar($sql)) {
+                $this->setIDUsuario($id);
                 $resp = true;
             } else {
                 $this->setmensajeoperacion("Usuario->insertar: ".$base->getError());
