@@ -17,9 +17,12 @@ class AbmProducto{
             }
         }
         if($param['proaccion'] == 'nuevo'){
+
             if($this->alta($param)){
                 $resp =true;
+                
             }
+
             
         }
         return $resp;
@@ -92,7 +95,7 @@ class AbmProducto{
         $param['idproducto'] = null; //con increment
 
         $objProducto = $this->cargarObjeto($param);
-
+        
         if ($objProducto!=null and $objProducto->insertar()){
             $resp = true;
         }
@@ -129,10 +132,10 @@ class AbmProducto{
      */
     public function modificacion($param){
         $resp = false;
-        echo 'modificacion'.$param['idproducto'];
+        //echo 'modificacion'.$param['idproducto'];
         if ($this->seteadosCamposClaves($param)){
             $objProducto = $this->cargarObjeto($param);
-            verEstructura($objProducto);
+            //verEstructura($objProducto);
             if($objProducto != null and $objProducto->modificar()){
                 $resp = true;
             }
@@ -164,5 +167,39 @@ class AbmProducto{
         $arreglo = Producto::listar($where);  
         return $arreglo;
     }
+
+
+
+    public function subirArchivo($datos){
+        $nombreArchivoImagen = $datos['idproducto'] . ".jpg";
+        $dir = '../Archivos/';
+
+       
+        $respuesta = array(
+            'mensaje' => ''.$dir.$nombreArchivoImagen,
+            'exito' => true
+        );
+
+        if ($_FILES["proimagen"]["error"] <= 0) {
+            $respuesta['exito']= true;
+            $respuesta['mensaje']= "";
+        } else {
+            $respuesta['exito'] = false;
+            $respuesta['mensaje'] = "ERROR: no se pudo cargar el archivo de imagen. No se pudo acceder al archivo Temporal";
+        }
+
+        if ($respuesta['exito'] && $_FILES['proimagen']["size"] / 1024 > 300) {
+            $respuesta['mensaje'] = "ERROR: El archivo " . $nombreArchivoImagen . " supera los 300 KB.";
+            $respuesta['exito'] = false;
+        }
+
+        if ($respuesta['exito'] && !copy($_FILES['proimagen']['tmp_name'], $dir . $nombreArchivoImagen)) {
+            $respuesta['mensaje'] = "ERROR: no se pudo cargar el archivo de imagen.";
+            $respuesta['exito'] = false;
+        }
+        return $respuesta;
+    }
+
+    
 }
 ?>

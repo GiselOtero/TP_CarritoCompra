@@ -9,7 +9,7 @@ if(isset($datos['mensaje'])){
 }
 ?>
 
-<div>
+<div class="m-4 p-4 text-center ">
     <div class="row float-left">
         <div class="col-md-12 float-left">
             <?php 
@@ -22,23 +22,23 @@ if(isset($datos['mensaje'])){
     </div>
 
 
-    <form action="verificarLogin.php" method="post" name="formularioLogin" id="formularioLogin">
-        <div class="mb-3">
-            <label for="usnombre">Nombre Usuario</label>
-            <input type="text" name="usnombre" id="usnombre">
-        </div>
-        <div class="mb-3">
-            <label for="uspass">Contrase&ntilde;a</label>
-            <input type="text" name="uspass" id="uspass">
-        </div>
-        <div>
-
-            <input type="submit" value="Ingresar">
-        </div>
-        <div>
-            <!-- registar -->
-        </div>
-    </form>
+        <form action="verificarLogin.php" method="post" name="formularioLogin" id="formularioLogin">
+            <div class="mb-3">
+                <label for="usnombre">Nombre Usuario</label>
+                <input type="text" name="usnombre" id="usnombre">
+            </div>
+            <div class="mb-3">
+                <label for="uspass">Contrase&ntilde;a</label>
+                <input type="text" name="uspass" id="uspass">
+            </div>
+            <div>
+    
+                <input type="submit" value="Ingresar">
+            </div>
+            <div>
+                <!-- registar -->
+            </div>
+        </form>
     
 </div>
 

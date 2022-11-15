@@ -122,7 +122,7 @@ class Producto extends BaseDatos {
     public function modificar(){
         $resp = false;
         $base = new BaseDatos();
-        $sql="UPDATE producto SET pronombre='".$this->getProNombre()."', prodetalle='".$this->getProDetalle()."', procantstock='".$this->getCiCantidad()."' WHERE idProducto='".$this->getProCantStock()."'";
+        $sql="UPDATE producto SET pronombre='".$this->getProNombre()."', prodetalle='".$this->getProDetalle()."', procantstock='".$this->getProCantStock()."' WHERE idproducto='".$this->getIDProducto()."'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
