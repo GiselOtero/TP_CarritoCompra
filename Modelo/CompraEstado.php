@@ -102,10 +102,11 @@ class CompraEstado extends BaseDatos {
     public function insertar(){
         $resp = false;
         $base = new BaseDatos();
-        $sql = "INSERT INTO compraestado(idcompraestado,idcompra,idcompraestadotipo,cefechaini,cefechafin)  VALUES('".$this->getIDCompraEstado()."','".$this->getCompra()->getIDCompra()."','".$this->getCompraEstadoTipo()->getIDCompraEstadoTipo()."','".$this->getCeFechaIni()."','".$this->getCeFechaFin()."');";
+        $sql = "INSERT INTO compraestado(idcompra,idcompraestadotipo,cefechaini,cefechafin)  VALUES('".$this->getCompra()->getIDCompra()."','".$this->getCompraEstadoTipo()->getIDCompraEstadoTipo()."','".$this->getCeFechaIni()."','".$this->getCeFechaFin()."');";
         if ($base->Iniciar()) {
             
-            if ($base->Ejecutar($sql)) {
+            if ($id=$base->Ejecutar($sql)) {
+                $this->setIDCompraEstado($id);
                 $resp = true;
             } else {
                 $this->setmensajeoperacion("CompraEstado->insertar: ".$base->getError());
@@ -166,7 +167,7 @@ class CompraEstado extends BaseDatos {
             if($res>0){
                 
                 while ($row = $base->Registro()){
-                    $obj= new CompraEstado();
+                    $obj = new CompraEstado();
                    
                     $objCompra =  new Compra();
                     $objCompra->setIDCompra($row['idcompra']);
@@ -176,7 +177,7 @@ class CompraEstado extends BaseDatos {
                     $objCompraEstadoTipo->setIDCompraEstadoTipo($row['idcompraestadotipo']);
                     $objCompraEstadoTipo->cargar();
 
-                    $obj->setear($row['idcompraestado'],$objCompra,$objCompraEstado,$row['cefchaini'],$row['cefechafin']);
+                    $obj->setear($row['idcompraestado'],$objCompra,$objCompraEstadoTipo,$row['cefechaini'],$row['cefechafin']);
                     array_push($arreglo, $obj);
                 }
                
@@ -189,6 +190,8 @@ class CompraEstado extends BaseDatos {
         return $arreglo;
     }
 
+
+    
 
 }
 ?>

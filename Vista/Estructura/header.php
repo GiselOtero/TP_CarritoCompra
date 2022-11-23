@@ -17,6 +17,21 @@ include_once "../../configuracion.php";
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 
+
+    <!-- ******************* -->
+    <!-- JS validator -->
+    <script src="../JS/validator.js" type="text/javascript"></script>
+    <!-- JQuery easyui -->
+    <link rel="stylesheet" type="text/css" href="../JS/jquery-easyui-1.6.6/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../JS/jquery-easyui-1.6.6/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../JS/jquery-easyui-1.6.6/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="../JS/jquery-easyui-1.6.6/demo/demo.css">
+    <script type="text/javascript" src="../JS/jquery-easyui-1.6.6/jquery.min.js"></script>
+    <script type="text/javascript" src="../JS/jquery-easyui-1.6.6/jquery.easyui.min.js"></script>
+
+    <!-- ******************** -->
+
+
 </head>
 <body>
 
@@ -24,7 +39,7 @@ include_once "../../configuracion.php";
 
 
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="#!">Bootstrap Electronic</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -41,7 +56,7 @@ include_once "../../configuracion.php";
     <!-- Navigation -->
 
     <!-- container -->
-    <main class="container">
+    <main class="container m-3 p-3">
 
 
 

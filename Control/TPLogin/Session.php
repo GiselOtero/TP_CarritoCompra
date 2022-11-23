@@ -48,7 +48,7 @@ class Session{
 
         $condicion = array(
             'usnombre' => $usuario,
-            'uspassw' => $passw
+            'uspass' => $passw
         );
         $objAbmUsuario = new AbmUsuario();
         $listUsuario = $objAbmUsuario->buscar($condicion);
@@ -134,6 +134,61 @@ class Session{
             $_SESSION['usnombre'] = "";
             session_destroy();
         }
+    }
+
+
+
+
+
+     /* Session Carrito */
+     public function getCompra(){
+        /* verificar rol usuario */
+        $datos['idusuario'] = $_SESSION['idusuario'];
+
+        $unaCompra = null;
+        
+        $controlCarrito = new controlCarrito();
+
+        $unaCompra = $controlCarrito->obtenerUltimaCompra($datos);
+
+        return $unaCompra;
+    }
+
+    public function getCompraEstado(){
+        /* verificar rol usuario */
+        $unaCompra = $this->getCompra();
+        $unaCompraEstado = null;
+
+        if($unaCompra != null){
+            $controlCarrito = new ControlCarrito();
+
+            $datos['idcompra'] = $unaCompra->getIDCompra();
+            $unaCompraEstado = $controlCarrito->ultimoCompraEstado($datos);
+
+            if($unaCompraEstado == null){
+                /* si en caso de existir compra pero no tiene ningun CompraEstado se crea uno iniciandolo en pendiente */
+                if($controlCarrito->iniciarCompraPendiente($datos)){
+                    $unaCompraEstado = $controlCarrito->ultimoCompraEstado($datos);
+                }
+            }
+        }
+
+        return $unaCompraEstado;
+    }
+
+    public function verCarrito(){
+        $unaLista = array();
+        $controlCarrito = new controlCarrito();
+        if($this->validar()){
+            $datos['idusuario'] = $_SESSION['idusuario'];
+            $objCompra = $controlCarrito->obtenerUltimaCompra($datos);
+            if($objCompra!= null){
+
+                $datos['idcompra'] = $objCompra->getIDCompra();
+                $unaLista = $controlCarrito->colProductosCompra($datos);
+            }
+        }
+        return $unaLista;
     }
 }
 ?>

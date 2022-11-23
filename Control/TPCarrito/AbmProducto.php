@@ -171,12 +171,15 @@ class AbmProducto{
 
 
     public function subirArchivo($datos){
-        $nombreArchivoImagen = $datos['idproducto'] . ".jpg";
-        $dir = '../Archivos/';
+        $nombreArchivoImagen = $datos['idproducto'];
+        $dir = '../../Archivos/';
 
-       
+
+        $tipoArchivo= pathinfo($_FILES["proimagen"]["name"], PATHINFO_EXTENSION);
+
+        $target_file = $dir.$nombreArchivoImagen.".".$tipoArchivo;
         $respuesta = array(
-            'mensaje' => ''.$dir.$nombreArchivoImagen,
+            'mensaje' => ''.$target_file,
             'exito' => true
         );
 
@@ -184,16 +187,17 @@ class AbmProducto{
             $respuesta['exito']= true;
             $respuesta['mensaje']= "";
         } else {
+
             $respuesta['exito'] = false;
             $respuesta['mensaje'] = "ERROR: no se pudo cargar el archivo de imagen. No se pudo acceder al archivo Temporal";
         }
 
-        if ($respuesta['exito'] && $_FILES['proimagen']["size"] / 1024 > 300) {
-            $respuesta['mensaje'] = "ERROR: El archivo " . $nombreArchivoImagen . " supera los 300 KB.";
+        if ($respuesta['exito'] && $_FILES['proimagen']["size"] / 1024 > 400) {
+            $respuesta['mensaje'] = "ERROR: El archivo " . $nombreArchivoImagen . " supera los 400 KB.";
             $respuesta['exito'] = false;
         }
 
-        if ($respuesta['exito'] && !copy($_FILES['proimagen']['tmp_name'], $dir . $nombreArchivoImagen)) {
+        if ($respuesta['exito'] && !copy($_FILES['proimagen']['tmp_name'], $target_file)) {
             $respuesta['mensaje'] = "ERROR: no se pudo cargar el archivo de imagen.";
             $respuesta['exito'] = false;
         }

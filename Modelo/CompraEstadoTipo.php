@@ -13,6 +13,12 @@ class CompraEstadoTipo extends BaseDatos {
     }
 
 
+    public function setear($id,$descripcion,$detalle){
+        $this->setIDCompraEstadoTipo($id);
+        $this->setCetDescripcion($descripcion);
+        $this->setCetDetalle($detalle);
+    }
+
     public function getIDCompraEstadoTipo(){
         return $this->idCompraEstadoTipo;
     }

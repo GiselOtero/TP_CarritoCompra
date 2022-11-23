@@ -31,9 +31,13 @@ class AbmUsuarioRol{
     private function cargarObjeto($param){
         $obj = null;
         if( array_key_exists('idusuario',$param) and array_key_exists('idrol',$param) ){
-            AbmUsuario::cargarObjeto();
 
+            $obj = new UsuarioRol();
+
+            $unUsuario = AbmUsuario::cargarObjetoConClave($param);
+            $unRol = AbmRol::cargarObjetoConClave($param);
             
+            $obj->setear($unUsuario,$unRol);
         }
         return $obj;
     }
@@ -51,8 +55,16 @@ class AbmUsuarioRol{
         if(isset($param['idusuario']) AND isset($param['idrol']) ){
 
             $obj = new UsuarioRol();
+
+            $unUsuario = new Usuario();
+            $unUsuario->setIDMenu($param['idusuario']);
+            $unUsuario->cargar();
+
+            $unRol = new Rol();
+            $unRol->setIDRol($param['idrol']);
+            $unRol->cargar();
             
-            $obj->setear($param['idusuario'],$param['idrol']);
+            $obj->setear($unUsuario,$unRol);
             
         }
         return $obj;

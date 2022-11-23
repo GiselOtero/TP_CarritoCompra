@@ -13,6 +13,13 @@ class CompraItem extends BaseDatos {
         $this->ciCantidad = "";
     }
 
+    public function setear($id,$unProducto,$unaCompra,$cantProd){
+        $this->setIDCompraItem($id);
+        $this->setProducto($unProducto);
+        $this->setCompra($unaCompra);
+        $this->setCiCantidad($cantProd);
+    }
+
     public function getIDCompraItem(){
         return $this->idCompraItem;
     }
@@ -83,10 +90,11 @@ class CompraItem extends BaseDatos {
     public function insertar(){
         $resp = false;
         $base=new BaseDatos();
-        $sql = "INSERT INTO compraitem(idcompraitem,idproducto,idcompra,cicantidad)  VALUES('".$this->getIDCompraItem()."','".$this->getCompra()->getIDCompra()."','".$this->getUsuario()->getIDUsuario()."','".$this->getCiCantidad()."');";
+        $sql = "INSERT INTO compraitem(idcompra,idproducto,cicantidad)  VALUES('".$this->getCompra()->getIDCompra()."','".$this->getProducto()->getIDProducto()."','".$this->getCiCantidad()."');";
         if ($base->Iniciar()) {
             
-            if ($base->Ejecutar($sql)) {
+            if ($id = $base->Ejecutar($sql)) {
+                $this->setIDCompraItem($id);
                 $resp = true;
             } else {
                 $this->setmensajeoperacion("CompraItem->insertar: ".$base->getError());
@@ -140,14 +148,14 @@ class CompraItem extends BaseDatos {
         $base = new BaseDatos();
         $sql = "SELECT * FROM compraitem ";
         if ($parametro!="") {
-            $sql.='WHERE '.$parametro;
+            $sql.=' WHERE '.$parametro;
         }
         $res = $base->Ejecutar($sql);
         if($res>-1){
             if($res>0){
                 
                 while ($row = $base->Registro()){
-                    $obj= new CompraItem();
+                    $obj = new CompraItem();
                     
                     $objProducto = new Producto();
                     $objProducto->setIDProducto($row['idproducto']);
@@ -158,6 +166,7 @@ class CompraItem extends BaseDatos {
                     $objCompra->cargar();
 
                     $obj->setear($row['idcompraitem'],$objProducto,$objCompra,$row['cicantidad']);
+                    
                     array_push($arreglo, $obj);
                 }
                

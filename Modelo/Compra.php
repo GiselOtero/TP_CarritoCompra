@@ -15,7 +15,7 @@ class Compra extends BaseDatos {
 
     public function setear($id,$fecha,$unUsuario){
         $this->setIDCompra($id);
-        $this->setCofecha($coFecha);
+        $this->setCofecha($fecha);
         $this->setUsuario($unUsuario);
     }
 
@@ -27,10 +27,10 @@ class Compra extends BaseDatos {
     }
 
     public function getCofecha(){
-        return $this->cofecha;
+        return $this->coFecha;
     }
     public function setCofecha($valor){
-        $this->cofecha = $valor;
+        $this->coFecha = $valor;
     }
 
     public function getUsuario(){
@@ -78,10 +78,11 @@ class Compra extends BaseDatos {
     public function insertar(){
         $resp = false;
         $base=new BaseDatos();
-        $sql = "INSERT INTO compra(idcompra,cofecha,idusuario)  VALUES('".$this->getIDCompra()."','".$this->getCofecha()."','".$this->getUsuario()->getIDUsuario()."');";
+        $sql = "INSERT INTO compra(cofecha,idusuario)  VALUES('".$this->getCofecha()."','".$this->getUsuario()->getIDUsuario()."');";
         if ($base->Iniciar()) {
             
-            if ($base->Ejecutar($sql)) {
+            if ($id = $base->Ejecutar($sql)) {
+                $this->setIDCompra($id);
                 $resp = true;
             } else {
                 $this->setmensajeoperacion("Compra->insertar: ".$base->getError());

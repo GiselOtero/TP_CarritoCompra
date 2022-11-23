@@ -2,7 +2,10 @@
 class AbmCompra{
     //Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
 
-    
+
+
+
+
     /**
      * Espera como parametro un arreglo asociativo donde las claves coinciden con los nombres de las variables instancias del objeto
      * @param array $param
@@ -19,7 +22,7 @@ class AbmCompra{
             $objUsuario->setIDUsuario($param['idusuario']);
             $objUsuario->cargar();
 
-            $obj->setear($param['idcompra'], $param['cofecha'],$objUsuario,$param['procantstock']);
+            $obj->setear($param['idcompra'], $param['cofecha'],$objUsuario);
         }
         return $obj;
     }
@@ -70,6 +73,9 @@ class AbmCompra{
      */
     public function alta($param){
         $resp = false;
+
+        $param['idcompra'] =  null;
+
         $objCompra = $this->cargarObjeto($param);
 
         if ($objCompra!=null and $objCompra->insertar()){

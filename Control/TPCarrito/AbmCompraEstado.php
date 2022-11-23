@@ -23,7 +23,7 @@ class AbmCompraEstado{
             $objCompraEstadoTipo->setIDCompraEstadoTipo($param['idcompraestadotipo']);
             $objCompraEstadoTipo->cargar();
 
-            $obj->setear($param['idcompraestado'], $objCompra,$objCompraEstadoTipo,$param['cefechaini']);
+            $obj->setear($param['idcompraestado'],$objCompra,$objCompraEstadoTipo,$param['cefechaini'],$param['cefechafin']);
         }
         return $obj;
     }
@@ -74,6 +74,9 @@ class AbmCompraEstado{
      */
     public function alta($param){
         $resp = false;
+
+        $param['idcompraestado'] = null;
+
         $objCompraEstado = $this->cargarObjeto($param);
 
         if ($objCompraEstado!=null and $objCompraEstado->insertar()){

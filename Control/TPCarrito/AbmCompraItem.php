@@ -16,7 +16,7 @@ class AbmCompraItem{
             $obj = new CompraItem();
             
             $objProducto = new Producto();
-            $objProducto->setIDProducto($param['iDproducto']);
+            $objProducto->setIDProducto($param['idproducto']);
             $objProducto->cargar();
             
             $objCompra = new Compra();
@@ -74,6 +74,9 @@ class AbmCompraItem{
      */
     public function alta($param){
         $resp = false;
+
+        $param['idcompraitem'] = null; //para auto_increment
+
         $objCompraItem = $this->cargarObjeto($param);
 
         if ($objCompraItem!=null and $objCompraItem->insertar()){
