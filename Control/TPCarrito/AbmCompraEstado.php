@@ -148,6 +148,8 @@ class AbmCompraEstado{
                 $where.=" and idcompraestadotipo ='".$param['idcompraestadotipo']."'";
             if  (isset($param['cefechaini']))
                  $where.=" and cefechaini ='".$param['cefechaini']."'";
+            if  (isset($param['cefechafin']))
+                 $where.=" and cefechafin ='".$param['cefechafin']."'";
         }
 
         $arreglo = CompraEstado::listar($where);  

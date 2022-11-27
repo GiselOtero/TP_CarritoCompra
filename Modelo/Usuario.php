@@ -211,7 +211,7 @@ class Usuario extends BaseDatos{
 
     public function deshabilitar(){
         $unaFecha = date("Y-m-d h:i:sa");
-        echo $unaFecha;
+        //echo $unaFecha;
         $this->setUsDeshabilitado($unaFecha);
         $resp=$this->modificar();
 

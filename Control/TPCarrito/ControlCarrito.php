@@ -92,14 +92,14 @@ class controlCarrito{
                 'exito' => false,
                 'mensaje'=> "No se puede eliminar productos al carrito"
             ); 
-        }else if($estado->getCeFechaFin() == null || $estado->getCeFechaFin() == '0000-00-00 00:00:00' ){
+        }else if($objCompraEstado->getCeFechaFin() == null || $objCompraEstado->getCeFechaFin() == '0000-00-00 00:00:00' ){
             $datos['idcompra']=$objCompraEstado->getCompra()->getIDCompra();
-            $datos['idproducto']=$param['idproducto'];
+            $datos['idcompraitem']=$param['idcompraitem'];
             /* $datos['cicantidad']=$param['cantProd'];  */
             if($this->eliminarCompraItem($datos)){
                 $respuesta = array(
                     'exito' => true,
-                    'mensaje' => 'El producto se eliminar correcatemnte al carrito'
+                    'mensaje' => 'El producto se elimino correcatemnte del carrito'
                 );
                 
             }
@@ -128,7 +128,7 @@ class controlCarrito{
      * @return obj $objCompra
      * 
      */
-    public function obtenerUltimaCompra($param){
+    public function obtenerUltimaCompra($param){ 
 
         $objCompra = null;
         $abmCompra = new AbmCompra();
@@ -153,14 +153,15 @@ class controlCarrito{
      * 
      */
     public function ultimoCompraEstado($param){
+        /* solo buscar el compraEstado con ifecha fin es nulo */
         $dato['idcompra'] = $param['idcompra'];
-
         $unaCompraEstado = null;
         $abmCompraEstado = new AbmCompraEstado();
         $listarCE = $abmCompraEstado->buscar($dato);
         $cantCE = count($listarCE);
         if($cantCE > 0){
             $unaCompraEstado = $listarCE[$cantCE-1];
+
         }
 
         return $unaCompraEstado;
@@ -250,7 +251,29 @@ class controlCarrito{
 
 
 
+    public function iniciarCompraIniciada(){
 
+    }
+
+
+
+    /**
+     * 
+     */
+    public function estadoVigente($param){
+        $abmCompraEstado = new AbmCompraEstado();
+        $estadoVigente = null;
+        $datos['idcompra'] = $param['idcompra'];
+        $datos['cedeshabilitado'] = '0000-00-00 00:00:00';     
+        $listaCE = $abmCompraEstado->buscar($datos);
+        if(count($listaCE)>0){
+            $estadoVigente = $listaCE[0];
+        }
+
+        
+        return $estadoVigente;
+        
+    }
 
 }
 

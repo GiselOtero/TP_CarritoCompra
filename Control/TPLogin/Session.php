@@ -16,11 +16,24 @@ class Session{
      * Actualiza las variables de sesión con los valores ingresados
     */
     public function iniciar($nombreUsuario,$psw){
-
-        //$resp = $this->validar();
-
-        /* $objAbmUsuario = new AbmUsuario(); */
-        $resp = $this->validacion($nombreUsuario,$psw); 
+        $resp = false;
+        $objAbmUsuario = new AbmUsuario();
+        $param = array(
+            'usnombre' => $nombreUsuario,
+            'uspass' => $psw
+        );
+        
+        //verEstructura($listUsuario);
+        $listar = $objAbmUsuario->buscar($param);
+        if(count($listar)>0){
+            $objUsuario = $listar[0];
+            if($objUsuario->getUsDeshabilitado() == null || $objUsuario->getUsDeshabilitado() == "0000-00-00 00:00:00" ){
+                $_SESSION['idusuario']=$objUsuario->getIdUsuario();
+                $_SESSION['usnombre']=$param['usnombre'];
+                /* $_SESSION['rol'] = $this->getRol(); */
+                $resp = true;
+            }
+        }
 
         return $resp;
     }
@@ -43,28 +56,29 @@ class Session{
         return $resp;
     }
 
-    public function validacion($usuario,$passw){
+    /* public function validacion($usuario,$psw){
         $resp = false;
-
+        $objAbmUsuario = new AbmUsuario();
         $condicion = array(
             'usnombre' => $usuario,
-            'uspass' => $passw
+            'uspass' => $psw
         );
-        $objAbmUsuario = new AbmUsuario();
         $listUsuario = $objAbmUsuario->buscar($condicion);
-
-        if(count($listUsuario) > 0){
-            $unUsuario = $listUsuario[0];
-            if(!$unUsuario->esDeshabilitado()){
-                $_SESSION['idusuario'] = $unUsuario->getIDUsuario();
-                $_SESSION['usnombre'] = $unUsuario->getUsNombre();
-                //$_SESSION['rolusuario'] ;
+        //verEstructura($listUsuario);
+        $listar = $obj->buscar($param);
+        if(count($listar)>0){
+            $objUsuario = $listar[0];
+            if($objUsuario->getUsDeshabilitado() == null || $objUsuario->getUsDeshabilitado() == "0000-00-00 00:00:00" ){
+                $_SESSION['idusuario']=$objUsuario->getIdUsuario();
+                $_SESSION['usnombre']=$param['usnombre'];
+                //$_SESSION['rol'] = $this->getRol();
                 $resp = true;
             }
         }
 
+
         return $resp;
-    }
+    } */
 
 
 
@@ -98,6 +112,7 @@ class Session{
     }
 
 
+    
 
 
     /**
@@ -140,8 +155,8 @@ class Session{
 
 
 
-     /* Session Carrito */
-     public function getCompra(){
+    /* Session Carrito */
+    public function getCompra(){
         /* verificar rol usuario */
         $datos['idusuario'] = $_SESSION['idusuario'];
 
@@ -192,3 +207,6 @@ class Session{
     }
 }
 ?>
+
+
+<!-- crear una funcion  -->
