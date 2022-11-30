@@ -154,59 +154,30 @@ class Session{
 
 
 
+    /* editar */
+    public function getMenuRol(){
+        $roles = $this->getRol();
+        $abmMenuRol = new AbmMenuRol();
+        $array = array();
+        if(count($roles)>0){
 
-    /* Session Carrito */
-    public function getCompra(){
-        /* verificar rol usuario */
-        $datos['idusuario'] = $_SESSION['idusuario'];
-
-        $unaCompra = null;
-        
-        $controlCarrito = new controlCarrito();
-
-        $unaCompra = $controlCarrito->obtenerUltimaCompra($datos);
-
-        return $unaCompra;
-    }
-
-    public function getCompraEstado(){
-        /* verificar rol usuario */
-        $unaCompra = $this->getCompra();
-        $unaCompraEstado = null;
-
-        if($unaCompra != null){
-            $controlCarrito = new ControlCarrito();
-
-            $datos['idcompra'] = $unaCompra->getIDCompra();
-            $unaCompraEstado = $controlCarrito->ultimoCompraEstado($datos);
-
-            if($unaCompraEstado == null){
-                /* si en caso de existir compra pero no tiene ningun CompraEstado se crea uno iniciandolo en pendiente */
-                if($controlCarrito->iniciarCompraPendiente($datos)){
-                    $unaCompraEstado = $controlCarrito->ultimoCompraEstado($datos);
+            foreach($roles as $unRol ){
+                $datos['idrol'] = $unRol->getIDRol();
+                $listar = $abmMenuRol->buscar($datos);
+                if(count($listar)>0){
+                    
+                    $arrayMenu = array(
+                        'rol'=> $unRol->getIDRol(),
+                        'listamenu' => $listar, 
+                    );
+                    array_push($array,$arrayMenu);
                 }
             }
         }
 
-        return $unaCompraEstado;
+        return $array;
+        
     }
 
-    public function verCarrito(){
-        $unaLista = array();
-        $controlCarrito = new controlCarrito();
-        if($this->validar()){
-            $datos['idusuario'] = $_SESSION['idusuario'];
-            $objCompra = $controlCarrito->obtenerUltimaCompra($datos);
-            if($objCompra!= null){
 
-                $datos['idcompra'] = $objCompra->getIDCompra();
-                $unaLista = $controlCarrito->colProductosCompra($datos);
-            }
-        }
-        return $unaLista;
-    }
 }
-?>
-
-
-<!-- crear una funcion  -->
