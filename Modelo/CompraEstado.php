@@ -122,7 +122,7 @@ class CompraEstado extends BaseDatos {
     public function modificar(){
         $resp = false;
         $base = new BaseDatos();
-        $sql="UPDATE compraestado SET compra='".$this->getCompra()->getIDCompra()."', compraestadotipo='".$this->getCompraEstadoTipo()->getIDCompraEstadoTipo()."', cefechaini='".$this->getCeFechaIni()."',cefechafin='".$this->getCeFechaFin()."' WHERE idcompraestado='".$this->getIDCompraEstado()."'";
+        $sql="UPDATE compraestado SET idcompra='".$this->getCompra()->getIDCompra()."', idcompraestadotipo='".$this->getCompraEstadoTipo()->getIDCompraEstadoTipo()."', cefechaini='".$this->getCeFechaIni()."',cefechafin='".$this->getCeFechaFin()."' WHERE idcompraestado='".$this->getIDCompraEstado()."'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;

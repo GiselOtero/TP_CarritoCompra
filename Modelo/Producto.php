@@ -134,7 +134,7 @@ class Producto extends BaseDatos {
     public function modificar(){
         $resp = false;
         $base = new BaseDatos();
-        $sql="UPDATE producto SET pronombre='".$this->getProNombre()."', prodetalle='".$this->getProDetalle()."', procantstock='".$this->getProCantStock().", proprecio='".$this->getProPrecio()."' WHERE idproducto='".$this->getIDProducto()."'";
+        $sql="UPDATE producto SET pronombre='".$this->getProNombre()."', prodetalle='".$this->getProDetalle()."', procantstock='".$this->getProCantStock()."', proprecio='".$this->getProPrecio()."' WHERE idproducto='".$this->getIDProducto()."'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
@@ -194,6 +194,12 @@ class Producto extends BaseDatos {
         return $arreglo;
     }
 
+    public function cambiarStock($nuevoStock){
+        $exito = false;
+        $this->setProCantStock($nuevoStock);
+        $exito = $this->modificar();
+        return $exito;
+    }
 
 }
 ?>
