@@ -1,75 +1,167 @@
 <?php
 include_once "../../configuracion.php";
 
+include_once "../Estructura/headerS.php";
+
 /* *********************** Preguntar Rol de usuario********************** */
-/* $objSession = new Session(); */
-
-include_once "../Estructura/headerSeguro.php";
-
-$carrito = new controlCarrito();
-/* $arrayCarrito = $objSession->verCarrito(); */
-
-$datos['idcompra'] = 1;
-$arrayCarrito = $carrito->colProductosCompra($datos);
-
+/* solo puede ver el rol cliente */
+$urlActual = $_SERVER["PHP_SELF"];
+if($objSession->tienePermiso($urlActual,$rolActual)){ //editar, no se debe usar el rol actual en las paginas(?
+  $param['idusuario'] = $objSession->getUsuario()->getIDUsuario();
+  $arrayCarrito =$objCarrito->verCarrito($param);
+  //Para Ver el Estado del Carrito
+  $estadoVigente = $objCarrito->buscarEstadoVigente($param);
+  $estadoTipo = $estadoVigente->getCompraEstadoTipo();
 ?>
+<section class="py-5">
+<div class="container px-4 px-lg-5 mt-5">
 
-<?php
-if(count($arrayCarrito) > 0){
+<?php if( count($arrayCarrito) > 0){ ?>
+
+<div id="resp" class="row float-left my-4" style="display:none">
+    <div id="mensajeError" class="col-md-12 float-left alert alert-danger" role="alert" style="display:none">
+        
+
+    </div>
+    <div id="mensajeBien" class="col-md-12 float-left alert alert-success" role="alert" style="display:none">
+
+    </div>
+</div>
+
+<div id="Estado Carrito" class="col-md-12 float-left alert alert-primary" role="alert" >
+  <?php 
+    echo $estadoTipo->getCetDescripcion(); 
     ?>
 
+</div>
 
-<table class="table text-center">
-  <thead class="table-light">
+<table class="table text-center table-light">
+  <thead >
     <tr class="text-center">
       <th scope="col">Producto</th>
+      <th scope="col">Precio Unitario</th>
       <th scope="col">Cantidad</th>
       <th scope="col">--</th>
-      
-      <!-- <th scope="col">Precio</th>
-      <th scope="col">Precio total</th> -->
+      <!--  <th scope="col">Precio total</th> -->
     </tr>
 
   </thead>
   <tbody>
-
-    <?php
-    /*  <th> <?php echo $unaCompraItem->getProducto()->getProNombre(); ?> </th>
-     <th> <?php echo $unaCompraItem->getCiCantidad(); ?> </th> */
-      foreach($arrayCarrito as $unaCompraItem){ 
-        echo '<tr >';
-        echo '<td>'.$unaCompraItem->getProducto()->getProNombre().' </td>';
-        echo '<td> '.$unaCompraItem->getCiCantidad().' </td>';
-        ?>
-         <td> 
-            <form action="accionCarrito.php" method="post">
-              <input type="hidden" name="idproducto" id="idproducto" value="<?php echo $unaCompraItem->getProducto()->getIDProdcto(); ?>" >
-              <input type="hidden" name="accion" id="accion" value="eliminar">
-              
-              <button type="button" class="btn btn-danger">Eliminar</button>
-
-            </form>
-          </td> 
-        </tr>;
-      <?php } //fin foreach ?>
+<?php
+  foreach($arrayCarrito as $unaCompraItem){ 
+    $unProducto = $unaCompraItem->getProducto();
+    echo "<tr>";
+    echo "<td>".$unProducto->getProNombre()." </td>";
+    echo "<td>&#36; ".$unProducto->getProPrecio()." </td>";
+    echo "<td>".$unaCompraItem->getCiCantidad()." </td>";
+  ?>
+    
+    <td> 
+      <div>
+      <?php if($estadoTipo->getIDCompraEstadoTipo() == 5){  ?>
+         <form  method="post">
+            <input type="hidden" name="idcompraitem" id="idcompraitem" value="<?php echo $unaCompraItem->getIDCompraItem(); ?>" >
+            <input type="hidden" name="accion" id="accion" value="eliminar">
+            <input type="submit" class="btn btn-danger" value="eliminar">
+        </form>
+        <?php } ?>
+        </div>
+      </td> 
+  </tr>
+    <?php } //fin foreach ?>
 
   </tbody>
 </table>
 
 <div>
-  <form action="../Compra/IniciarCompra.php"  method="post">
+  <?php if($estadoTipo->getIDCompraEstadoTipo() == 5){
+    ?>
+  <form   method="post">
+    <input type="hidden" name="accion" id="accion" value="iniciarcompra">
     <button type="submit" class="btn btn-success">Iniciar Compra</button>
   </form>
+  <?php } ?>
 </div>
 
+    <?php
+      }else{  
+        echo "El carrito se encuentra Vacio";
+      }
+    ?>
+    </div>
+</section>
 <?php
-}else{
+}//fin rol
+else{
+  echo "<script>location.href = '../Login/PaginaSegura.php';</script>";
 
-    echo "El carrito se encuentra Vacio";
 }
 ?>
 <?php?>
 
+<script type="text/javascript">
+  console.log("javascript");
+  $(document).ready(function(){
+
+    console.log("jquery");
+    
+    $("form").submit(function(e){
+            console.log("formulario Carrito");
+            e.preventDefault();
+            //const datos = {
+            //    accion: $('#accion').val(),
+              //  idproducto: $('#idproducto').val(),
+              //  cicantidad:$('#cicantidad').val(),
+            //};
+            var $form = $(this);
+            var url = $form.attr('action');
+            var dato = $form.find('input');//obtiene todos los elementos hijos del formulario
+            console.log($('#accion').val());
+
+            console.log("idcompraitem: " + $('#idcompraitem').val());
+
+            $.post(
+                'accionCarrito.php',
+                dato,
+                /*  function(respuesta){
+                    console.log('respuestaaaaaaaaaaaaaaaaaaaaaaa');
+                    mostrarResp(respuesta);
+                    
+                },"json" */
+                
+            )
+            .done(function(respuesta){
+                console.log('respuestaaaaaaaaaaaaaaaaaaaaaaa');
+                console.log(respuesta);
+                var result = JSON.parse(respuesta);
+                if(result.exito){
+                    console.log("exito");
+                    $('#resp').show('4000');
+                    $('#mensajeBien').html(result.mensaje).css("display", "block");
+                }else{
+                    console.log("mensaje error");
+                   
+                    $('#resp').show('4000');
+                    $('#mensajeError').html(result.mensaje).css("display", "block");
+                }
+                
+            })
+            .fail(function(){
+                console.log("fallo el envio de datos");
+            });
+        }
+
+        );
+
+
+    });
+
+
+</script>
+
+
 <?php
-include_once "../Estructura/footer.php"
+include_once "../Estructura/footer.php";
+/*  <th> <?php echo $unaCompraItem->getProducto()->getProNombre(); ?> </th>
+ <th> <?php echo $unaCompraItem->getCiCantidad(); ?> </th> */
 ?>
