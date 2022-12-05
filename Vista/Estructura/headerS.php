@@ -10,13 +10,6 @@ if(!$objSession->validar()){
     
     
 }else{
-    $param['idusuario'] = $objSession->getUsuario()->getIDUsuario();
-    $cantCarrito = 0;
-    if(count($objCarrito->verCarrito($param)) > 0){ 
-        $cantCarrito = count($objCarrito->verCarrito($param));
-    } 
-
-    
     $abmMenuRol = new AbmMenuRol();
     $roles = $objSession->getRol();
     if(count($roles) == 1){
@@ -40,6 +33,10 @@ if(!$objSession->validar()){
     <title>Bootstrap</title>
 
     
+    <!-- Fontawesone -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    
         <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -52,9 +49,6 @@ if(!$objSession->validar()){
     <script src="../JS/bootstrap-5.2.2/bootstrap.bundle.min.js.map"></script>
     <script src="../JS/bootstrap-5.2.2/bootstrap.min.js.map"></script>
 
-    <!-- Fontawesone -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 
     <!-- jQuery -->
     <script src="../JS/Jquery-3.6.1/jquery-3.6.1.min.js" type="text/javascript"></script>
@@ -112,7 +106,14 @@ if(!$objSession->validar()){
                                 </form>
                             <?php } ?>
                         </div>
-                    <?php if($rolActual->getIDRol() == '3'){ ?>
+                    <?php if($rolActual->getIDRol() == '3'){ 
+                            $param['idusuario'] = $objSession->getUsuario()->getIDUsuario();
+                            $cantCarrito = 0;
+                            if(count($objCarrito->verCarrito($param)) > 0){ 
+                                $cantCarrito = count($objCarrito->verCarrito($param));
+                            } 
+                        ?>
+
                         <div class="mx-3">
                             <a href="../Carrito/verListaCarrito.php" class="btn btn-outline-dark">
                              <i class="fas fa-shopping-cart"></i><span class="badge bg-dark text-white ms-1 rounded-pill" > <?php echo $cantCarrito ?> </span>

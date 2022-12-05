@@ -12,30 +12,32 @@ if($objSession->tienePermiso($urlActual,$rolActual)){ //editar, no se debe usar 
   //Para Ver el Estado del Carrito
   $estadoVigente = $objCarrito->buscarEstadoVigente($param);
   $estadoTipo = $estadoVigente->getCompraEstadoTipo();
+  //echo " estado Vigente= ".$estadoTipo."  idcompra= " .$estadoVigente->getCompra()->getIDCompra()."<br>";
 ?>
+  <!-- mensaje -->
+  <div id="resp" class="row float-left my-4 text-center" style="display:none">
+      <div id="mensajeError" class="col-md-12 float-left alert alert-danger" role="alert" style="display:none">
+          
+  
+      </div>
+      <div id="mensajeBien" class="col-md-12 float-left alert alert-success" role="alert" style="display:none">
+  
+      </div>
+  </div>
 <section class="py-5">
 <div class="container px-4 px-lg-5 mt-5">
 
+
 <?php if( count($arrayCarrito) > 0){ ?>
-
-<div id="resp" class="row float-left my-4" style="display:none">
-    <div id="mensajeError" class="col-md-12 float-left alert alert-danger" role="alert" style="display:none">
-        
-
-    </div>
-    <div id="mensajeBien" class="col-md-12 float-left alert alert-success" role="alert" style="display:none">
-
-    </div>
-</div>
 
 <div id="Estado Carrito" class="col-md-12 float-left alert alert-primary" role="alert" >
   <?php 
-    echo $estadoTipo->getCetDescripcion(); 
+    echo "Estado Actual del carrito: '".$estadoTipo->getCetDescripcion()."'"; 
     ?>
 
 </div>
 
-<table class="table text-center table-light">
+<table id="tabla" class="table text-center table-light">
   <thead >
     <tr class="text-center">
       <th scope="col">Producto</th>
@@ -62,7 +64,7 @@ if($objSession->tienePermiso($urlActual,$rolActual)){ //editar, no se debe usar 
          <form  method="post">
             <input type="hidden" name="idcompraitem" id="idcompraitem" value="<?php echo $unaCompraItem->getIDCompraItem(); ?>" >
             <input type="hidden" name="accion" id="accion" value="eliminar">
-            <input type="submit" class="btn btn-danger" value="eliminar">
+            <input type="submit" class="btn btn-outline-danger" value="eliminar">
         </form>
         <?php } ?>
         </div>
@@ -78,14 +80,17 @@ if($objSession->tienePermiso($urlActual,$rolActual)){ //editar, no se debe usar 
     ?>
   <form   method="post">
     <input type="hidden" name="accion" id="accion" value="iniciarcompra">
-    <button type="submit" class="btn btn-success">Iniciar Compra</button>
+    <button type="submit" class="btn btn-outline-success">Iniciar Compra</button>
   </form>
   <?php } ?>
 </div>
 
     <?php
       }else{  
-        echo "El carrito se encuentra Vacio";
+        echo '<div class="alert alert-primary text-center" role="alert">
+        El carrito se encuentra vacio
+      </div>
+      ';
       }
     ?>
     </div>
@@ -102,19 +107,15 @@ else{
 <script type="text/javascript">
   console.log("javascript");
   $(document).ready(function(){
-
+    
     console.log("jquery");
     
     $("form").submit(function(e){
             console.log("formulario Carrito");
             e.preventDefault();
-            //const datos = {
-            //    accion: $('#accion').val(),
-              //  idproducto: $('#idproducto').val(),
-              //  cicantidad:$('#cicantidad').val(),
-            //};
+            
             var $form = $(this);
-            var url = $form.attr('action');
+            //var url = $form.attr('action');
             var dato = $form.find('input');//obtiene todos los elementos hijos del formulario
             console.log($('#accion').val());
 
@@ -122,29 +123,23 @@ else{
 
             $.post(
                 'accionCarrito.php',
-                dato,
-                /*  function(respuesta){
-                    console.log('respuestaaaaaaaaaaaaaaaaaaaaaaa');
-                    mostrarResp(respuesta);
-                    
-                },"json" */
-                
+                dato, 
             )
             .done(function(respuesta){
                 console.log('respuestaaaaaaaaaaaaaaaaaaaaaaa');
                 console.log(respuesta);
                 var result = JSON.parse(respuesta);
                 if(result.exito){
-                    console.log("exito");
-                    $('#resp').show('4000');
-                    $('#mensajeBien').html(result.mensaje).css("display", "block");
+                  console.log("exito");
+                  $('#resp').show('4000');
+                  $('#mensajeBien').html(result.mensaje).css("display", "block");
+                  //location.reload();
                 }else{
-                    console.log("mensaje error");
-                   
-                    $('#resp').show('4000');
-                    $('#mensajeError').html(result.mensaje).css("display", "block");
+                  console.log("mensaje error");
+                  $('#resp').show('4000');
+                  $('#mensajeError').html(result.mensaje).css("display", "block");
                 }
-                
+                  
             })
             .fail(function(){
                 console.log("fallo el envio de datos");
