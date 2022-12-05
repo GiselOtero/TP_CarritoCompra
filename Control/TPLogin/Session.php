@@ -179,5 +179,24 @@ class Session{
         
     }
 
+    public function tienePermiso($url,$rolActual){
+        $resp= false;
+        $urlActual = pathinfo($url);
+        $verUrl=$urlActual['basename'];
+        $rol['idrol'] = $rolActual->getIDRol();
+        $abmMenuRol = new AbmMenuRol();
+        $listarMenu = $abmMenuRol->buscar($rol);
+        foreach($listarMenu as $unMenu){
+            //cambiar foreach 
+            $urlMenu =pathinfo( $unMenu->getMenu()->getMeDescripcion());
+            $verUrlMenu = $urlMenu ['basename'];
+            if($verUrl == $verUrlMenu){
+                $resp = true;
+            }
+
+        }
+        return $resp;
+    }
+
 
 }

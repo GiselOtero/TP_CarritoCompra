@@ -6,22 +6,25 @@ $datos = data_submitted();
 $objSession = new Session();
 
 $respuesta = array(
-    'exito' =>false,
-    'mensaje' =>''
+    'exito' =>0,
 );
 
 if(!$objSession->validar()){
-    
-    $esValido = $objSession->iniciar($datos['usnombre'],$datos['uspass']);
-    if($esValido){
-        echo "<script>location.href = '../Producto/verProductos.php';</script>" ;
-    }else{
-        $mensaje = " El usuario o contraseña es invalido ";
-        echo "<script>location.href = 'login.php?mensaje=".$mensaje."';</script>";
+    if(isset($datos['usnombre']) and isset($datos['uspass']) ){
+
+        $resp = $objSession->iniciar($datos['usnombre'],$datos['uspass']);
+
+        if($objSession->validar()){
+           
+            $respuesta=array(
+                'exito'=>1
+            );
+            
+        }
     }
 
-}else{
-
 }
+
+echo json_encode($respuesta);
 
 ?>
