@@ -122,7 +122,7 @@ if( count($listarCE) > 0 ){
 }//fin permiso
 else{
 
-    include_once "../Login/PermisoError.php";
+    include_once "../Login/PaginaSegura.php";
 }
 
 ?>

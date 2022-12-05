@@ -66,7 +66,7 @@ if(!$objSession->validar()){
             <a class="navbar-brand" href="#!">Bootstrap</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <ul id="listamenu" class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     
                     <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li> -->
                     
@@ -88,12 +88,12 @@ if(!$objSession->validar()){
                         <?php if ($esUnRol==false){?>
                             <form class="d-flex" method="post">
                                 <select name="roles" id="roles" class="form-select">
-                                    <!--  <option selected>Open this select menu</option> -->
+                                     <option selected>Selecionar Rol</option>
                                     <?php
                                         if(count($roles)>=0){
-                                            $unRol = $roles[0];
+                                            
                                             ?>
-                                        <option value="<?php echo $unRol->getIDRol();?>"><?php echo $unRol->getRoDescripcion();?></option>
+                                        
                                         <?php foreach($roles as $unRol ){  ?>
                                             <option value="<?php echo $unRol->getIDRol();?>"><?php echo $unRol->getRoDescripcion();?></option>
                                             
@@ -131,3 +131,30 @@ if(!$objSession->validar()){
         </nav>
 
 <?php } ?>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+  $('#roles').change(function(){
+    console.log("elegir rol");
+
+    var idrol = $(this).val();
+    console.log("rol seleccionado: "+idrol);
+
+    if(idrol.length > 0){
+      $.ajax({
+        url:'../accionMenu/verMenu.php',
+        type: 'POST',
+        dataType:'html',
+        data:{idrol:idrol},
+      }).done(function(data){
+        $('#listamenu').html(data);
+      });
+    }
+
+  });
+
+});
+</script>
